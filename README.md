@@ -8,6 +8,6 @@ This is a browser-based speech recognition system that controls a virtual LED wi
 4. *Web Speech API*: For real-time speech recognition and processing voice commands
 
 **Key Features**
-Voice-Controlled LED: Users can toggle the LED on or off using specific voice commands.
-Continuous Listening: The system listens for commands continuously without requiring any additional user input.
-Real-Time Feedback: The webpage provides immediate feedback, displaying the current state of the LED and any unrecognized commands
+- Voice-Controlled LED: Users can toggle the LED on or off using specific voice commands.
+- Continuous Listening: The system listens for commands continuously without requiring any additional user input.
+- Real-Time Feedback: The webpage provides immediate feedback, displaying the current state of the LED and any unrecognized commands
