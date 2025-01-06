@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech-Controlled LED</title>
+    <style>
+        .led {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 20px auto;
+            background-color: grey;
+        }
+        .on {
+            background-color: green;
+        }
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Speech-Controlled LED</h1>
+    <div id="led" class="led"></div>
+    <p id="status">Listening for commands... Say "Turn on" or "Turn off".</p>
+
+    <script>
+        let led = document.getElementById("led");
+        let status = document.getElementById("status");
+        let recognition;
+
+        // Initialize the Web Speech API
+        try {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = "en-US";
+            recognition.continuous = true; // Keep listening continuously
+        } catch (e) {
+            alert("Your browser does not support the Web Speech API.");
+        }
+
+        // Start continuous speech recognition
+        function startListening() {
+            if (!recognition) return;
+
+            recognition.start();
+            status.textContent = "Listening for commands...";
+
+            recognition.onresult = function(event) {
+                const command = event.results[event.results.length - 1][0].transcript.toLowerCase();
+                status.textContent = `Command received: ${command}`;
+
+                // Turn LED on/off based on the command
+                if (command.includes("turn on")) {
+                    led.className = "led on";
+                    status.textContent = "LED is ON.";
+                } else if (command.includes("turn off")) {
+                    led.className = "led";
+                    status.textContent = "LED is OFF.";
+                } else {
+                    status.textContent = "Unknown command. Please say 'Turn on' or 'Turn off'.";
+                }
+            };
+
+            recognition.onerror = function(event) {
+                status.textContent = `Error: ${event.error}`;
+            };
+
+            recognition.onend = function() {
+                // Restart recognition automatically if it stops
+                status.textContent = "Restarting listener...";
+                recognition.start();
+            };
+        }
+
+        // Automatically start listening when the page loads
+        window.onload = startListening;
+    </script>
+</body>
+</html>
